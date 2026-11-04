@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أبوصلاح | مستر شريف صلاح الدين</title>
+    
+    <!-- Google Fonts (Cairo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Lucide Icons (Fallback & Variety) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Custom Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            gold: '#D4AF37',
+                            goldLight: '#F3E5AB',
+                            emerald: '#059669',
+                            emeraldDark: '#022C22',
+                            darkBg: '#090D16',
+                            cardBg: 'rgba(15, 23, 42, 0.75)',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+                        'shimmer': 'shimmer 2.5s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-10px) rotate(1deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', filter: 'blur(20px)' },
+                            '50%': { opacity: '0.8', filter: 'blur(30px)' },
+                        },
+                        shimmer: {
+                            '100%': { transform: 'translateX(-100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #060911;
+            color: #F8FAFC;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        /* 3D Glassmorphism Cards */
+        .card-3d {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-3d:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(5, 150, 105, 0.25);
+        }
+
+        .card-content-3d {
+            transform: translateZ(30px);
+        }
+
+        .featured-card {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.25) 0%, rgba(212, 175, 55, 0.15) 100%);
+            border: 1.5px solid rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.25), inset 0 0 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .featured-card:hover {
+            border-color: #D4AF37;
+            box-shadow: 0 0 45px rgba(212, 175, 55, 0.4), 0 0 30px rgba(5, 150, 105, 0.4);
+        }
+
+        /* Dynamic Spotlight effect on hover */
+        .spotlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .card-3d:hover .spotlight {
+            opacity: 1;
+        }
+
+        /* Shimmer effect for links */
+        .shimmer-line {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: translateX(100%);
+        }
+        .card-3d:hover .shimmer-line {
+            animation: shimmer 1.5s infinite;
+        }
+
+        /* Glowing Orbs in background */
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060911;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+
+        /* Ripple effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            background-color: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative flex flex-col items-center justify-between py-10 px-4 sm:px-6 select-none">
+
+    <!-- Interactive Canvas Background -->
+    <canvas id="particleCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Glowing Background Atmosphere -->
+    <div class="bg-orb w-96 h-96 bg-emerald-600/20 top-[-50px] right-[-100px] animate-pulse-glow"></div>
+    <div class="bg-orb w-96 h-96 bg-amber-500/15 bottom-[-50px] left-[-100px] animate-pulse-glow" style="animation-delay: 1.5s;"></div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-xl mx-auto z-10 flex flex-col items-center gap-8">
+
+        <!-- HEADER SECTION (Profile & Branding) -->
+        <header class="flex flex-col items-center text-center w-full animate-float">
+            
+            <!-- Avatar Frame with 3D Depth & Lighting -->
+            <div class="relative group cursor-pointer mb-5">
+                <!-- Outer Glow Aura -->
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-emerald-500 via-amber-400 to-emerald-600 rounded-full blur-md opacity-75 group-hover:opacity-100 transition duration-500 group-hover:scale-105"></div>
+                
+                <!-- Avatar Image Container -->
+                <div class="relative w-36 h-36 sm:w-40 sm:h-40 rounded-full p-1 bg-slate-900 border-2 border-amber-400/50 shadow-2xl overflow-hidden flex items-center justify-center">
+                    <!-- Default avatar image (Fallback included) -->
+                    <img id="profileAvatar" 
+                         src="https://www.image2url.com/r2/default/images/1793826869487-31f95186-f63d-4faa-846d-220d52713473.png?auto=format&fit=crop&q=80&w=400" 
+                         alt="مستر شريف صلاح الدين" 
+                         class="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-110"
+                         onerror="this.src='https://via.placeholder.com/160/059669/FFFFFF?text=%D8%A3%D8%A8%D9%88%D8%B5%D9%84%D8%A7%D8%AD';">
+
+                    <!-- Overlay Icon for Custom Image Upload Toggle -->
+                    <label for="imageUpload" class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center text-white text-xs font-semibold cursor-pointer transition-opacity duration-300">
+                        <i class="fa-solid fa-camera text-xl mb-1 text-amber-400"></i>
+                        <span>تغيير الصورة</span>
+                    </label>
+                    <input type="file" id="imageUpload" accept="image/*" class="hidden" onchange="previewImage(event)">
+                </div>
+
+                <!-- Brand Badge / Crown -->
+                <div class="absolute -top-2 -right-2 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 p-2 rounded-full shadow-lg border border-white/20 transform rotate-12 group-hover:rotate-0 transition-transform">
+                    <i class="fa-solid fa-crown text-sm font-bold"></i>
+                </div>
+            </div>
+
+            <!-- Profile Details -->
+            <div class="space-y-2 px-4">
+                <!-- Primary Title -->
+                <h1 class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-400 to-amber-500 tracking-wide drop-shadow-md">
+                    أبوصلاح
+                </h1>
+                
+                <!-- Subtitle / Profession -->
+                <h2 class="text-lg sm:text-xl font-bold text-slate-200 flex items-center justify-center gap-2">
+                    <span>مستر شريف صلاح الدين</span>
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                </h2>
+
+                <p class="text-xs sm:text-sm text-emerald-400 font-semibold tracking-wider">
+                    مدرس الرياضيات والإحصاء ( إعدادي - ثانوي عام & أزهر - بكالوريا )
+                </p>
+
+                <!-- Personal Slogan Tag -->
+                <div class="pt-2">
+                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-extrabold bg-emerald-950/80 text-amber-300 border border-amber-500/30 shadow-inner">
+                        #أبوصلاح_الميح_هيكون_دحيح
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- SOCIAL & PLATFORM LINKS SECTION (3D Dynamic Grid) -->
+        <section class="w-full space-y-4 px-2" id="linksContainer">
+
+            <!-- 1. المنصة التعليمية (Featured Link) -->
+            <a href="https://sherif-salaheldin.vercel.app/" target="_blank" class="card-3d featured-card relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-950 text-2xl shadow-lg transform group-hover:rotate-6 transition-transform">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="text-right">
+                            <div class="flex items-center gap-2">
+                                <h3 class="font-bold text-lg text-amber-300 group-hover:text-amber-200 transition-colors">المنصة التعليمية الخاصة</h3>
+                                <span class="bg-amber-400/20 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full border border-amber-400/40">الأساسية</span>
+                            </div>
+                            <p class="text-xs text-slate-300">جميع المحاضرات في مكان واحد مُنظم ومُرتب</p>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-amber-400/10 flex items-center justify-center text-amber-400 group-hover:bg-amber-400 group-hover:text-slate-950 transition-all">
+                        <i class="fa-solid fa-arrow-left text-sm group-hover:-translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 2. صفحة الفيسبوك الرسمية -->
+            <a href="https://www.facebook.com/profile.php?id=61592296607479" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-2xl shadow-md group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-blue-400 transition-colors">صفحة الفيسبوك الرسمية</h3>
+                            <p class="text-xs text-slate-400">آخر الأخبار الشروحات والمواعيد</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-blue-400 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 3. قناة اليوتيوب -->
+            <a href="https://www.youtube.com/@Sherifsalaheldin" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500 text-2xl shadow-md group-hover:scale-110 group-hover:bg-red-600 group-hover:text-white transition-all">
+                            <i class="fa-brands fa-youtube"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-red-400 transition-colors">قناة اليوتيوب</h3>
+                            <p class="text-xs text-slate-400">محاضرات مجانية ومراجعات نهائية</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-red-400 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 4. قناة الواتساب -->
+            <a href="https://whatsapp.com/channel/0029VbBTK2f2UPBGQ4C2OC3d" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-600/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl shadow-md group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-emerald-400 transition-colors">قناة الواتساب الرسمية</h3>
+                            <p class="text-xs text-slate-400">تنبيهات فورية والملفات التلخيصية PDF</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-emerald-400 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 5. التواصل المباشر عبر الواتساب (مع ميزة النسخ السريع) -->
+            <div class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <a href="https://wa.me/201121654717" target="_blank" class="flex items-center gap-4 flex-grow">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 border border-green-500/30 flex items-center justify-center text-green-400 text-2xl shadow-md group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white transition-all">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-green-400 transition-colors">واتساب المستر</h3>
+                            <p class="text-xs text-slate-400 font-mono text-left dir-ltr">01121654717</p>
+                        </div>
+                    </a>
+
+                    <!-- Copy Phone Number Button -->
+                    <button onclick="copyToClipboard('01121654717')" title="نسخ الرقم" class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-amber-400 hover:border-amber-400/50 transition-all z-20">
+                        <i class="fa-regular fa-copy text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6. انستغرام -->
+            <a href="https://www.instagram.com/mr.sherif.salah?dlrf=dW5hcmRoNXd6cXYw&utm_source=qr" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-pink-600/20 border border-pink-500/30 flex items-center justify-center text-pink-400 text-2xl shadow-md group-hover:scale-110 group-hover:bg-pink-600 group-hover:text-white transition-all">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-pink-400 transition-colors">حساب الانستجرام</h3>
+                            <p class="text-xs text-slate-400">كواليس، استوري ونصائح سريعة</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-pink-400 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 7. تيك توك -->
+            <a href="https://www.tiktok.com/@shiref_salah_eldin?_r=1&_t=ZS-94aF0rlTmYa" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl shadow-md group-hover:scale-110 group-hover:bg-cyan-500 group-hover:text-black transition-all">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-cyan-400 transition-colors">حساب التيك توك</h3>
+                            <p class="text-xs text-slate-400">فيديوهات قصيرة وحيل رياضية سهلة</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-cyan-400 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 8. سناب شات -->
+            <a href="https://snapchat.com/t/dnuVacRx" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-400/20 border border-yellow-400/30 flex items-center justify-center text-yellow-400 text-2xl shadow-md group-hover:scale-110 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all">
+                            <i class="fa-brands fa-snapchat"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-yellow-400 transition-colors">سناب شات</h3>
+                            <p class="text-xs text-slate-400">يوميات وتغطية المراجعات</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-yellow-400 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 9. الفيسبوك الشخصي -->
+            <a href="https://www.facebook.com/sherif.salah.eldin00202/" target="_blank" class="card-3d relative group block w-full p-4 rounded-2xl overflow-hidden cursor-pointer">
+                <div class="spotlight"></div>
+                <div class="shimmer-line"></div>
+                <div class="card-content-3d flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-700/40 border border-slate-600/40 flex items-center justify-center text-slate-300 text-2xl shadow-md group-hover:scale-110 group-hover:bg-slate-700 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="text-right">
+                            <h3 class="font-bold text-base text-slate-100 group-hover:text-amber-300 transition-colors">الحساب الشخصي (فيسبوك)</h3>
+                            <p class="text-xs text-slate-400">التواصل الشخصي والاجتماعي</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-slate-500 group-hover:text-amber-300 group-hover:-translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+        </section>
+
+        <!-- FOOTER SECTION -->
+        <footer class="w-full text-center py-6 text-xs text-slate-500 space-y-2 border-t border-slate-800/60 mt-4">
+            <p>جميع الحقوق محفوظة &copy; <span id="year"></span> | <span class="text-amber-400/80 font-semibold">مستر شريف صلاح الدين</span></p>
+            <p class="text-[11px] text-slate-600">تم التصميم والتطوير بأعلى تقنيات الـ 3D التفاعلية</p>
+        </footer>
+
+    </main>
+
+    <!-- Custom Notification Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/90 text-amber-300 border border-amber-500/40 px-6 py-3 rounded-full shadow-2xl text-sm font-semibold opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2 z-50 backdrop-blur-md">
+        <i class="fa-solid fa-check-circle text-emerald-400 text-lg"></i>
+        <span id="toastMsg">تم نسخ الرقم بنجاح</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Set Current Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Canvas Interactive Particles
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = (Math.random() - 0.5) * 0.4;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = Math.random() > 0.5 ? '#D4AF37' : '#059669';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(Math.floor(window.innerWidth / 15), 60);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Dynamic 3D Tilt Effect on Link Cards
+        const cards = document.querySelectorAll('.card-3d');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Update CSS variables for spotlight glow position
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                // Calculate tilt angle
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -10; // Max tilt deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+
+            // Touch Ripple Effect
+            card.addEventListener('click', function (e) {
+                const rect = card.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                const diameter = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${diameter}px`;
+                ripple.style.left = `${e.clientX - rect.left - diameter / 2}px`;
+                ripple.style.top = `${e.clientY - rect.top - diameter / 2}px`;
+                card.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Copy Phone Number Shortcut Functionality
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast(`تم نسخ رقم الواتساب: ${text}`);
+        }
+
+        // Custom Toast Message Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = message;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Live Profile Image Preview Upload
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('profileAvatar');
+                output.src = reader.result;
+                showToast('تم تحديث صورة البروفايل بنجاح');
+            };
+            if(event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
